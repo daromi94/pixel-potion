@@ -17,5 +17,10 @@ class Color(
         }
     }
 
+    companion object {
+        val WHITE = Color(0xFF, 0xFF, 0xFF)
+        val BLACK = Color(0x00, 0x00, 0x00)
+    }
+
     fun toInt(): Int = (this.red shl 16) or (this.green shl 8) or this.blue
 }

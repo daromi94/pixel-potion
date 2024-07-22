@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage
 fun makeImage(
     width: Int,
     height: Int,
-    color: Color,
+    color: Color = Color.WHITE,
 ): BufferedImage {
     val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val pixel = color.toInt()
