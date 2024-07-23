@@ -39,9 +39,9 @@ class Image private constructor(
 
         val pixels = IntArray(width * height)
 
-        for (i in x..<x + width) {
-            for (j in y..<y + height) {
-                pixels[(j - y) * height + (i - x)] = this.buffer.getRGB(i, j)
+        for (j in y..<y + height) {
+            for (i in x..<x + width) {
+                pixels[(j - y) * width + (i - x)] = this.buffer.getRGB(i, j)
             }
         }
 
