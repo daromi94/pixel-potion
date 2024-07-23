@@ -1,6 +1,6 @@
 package com.pixel.potion
 
-class Color(
+class Color private constructor(
     private val red: Int,
     private val green: Int,
     private val blue: Int,
@@ -20,11 +20,16 @@ class Color(
         val BLACK = Color(0x00, 0x00, 0x00)
 
         @JvmStatic
-        fun fromHex(value: Int): Color {
+        fun fromHex(value: Int): Color? {
             val red = (value and 0xFF0000) shr 16
             val green = (value and 0xFF00) shr 8
             val blue = value and 0xFF
-            return Color(red, green, blue)
+
+            return try {
+                Color(red, green, blue)
+            } catch (_: IllegalArgumentException) {
+                null
+            }
         }
     }
 
