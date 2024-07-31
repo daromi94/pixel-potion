@@ -1,4 +1,4 @@
-package com.pixel.potion
+package com.daromi.pixel.potion
 
 class Color private constructor(
     private val red: Int,

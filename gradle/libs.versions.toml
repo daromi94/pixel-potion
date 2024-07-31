@@ -1,0 +1,9 @@
+[versions]
+kotlin-jvm = "2.0.0"
+kotlin-test = "2.0.0"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-test" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
