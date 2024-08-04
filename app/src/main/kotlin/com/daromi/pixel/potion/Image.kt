@@ -12,7 +12,6 @@ class Image private constructor(
     private val height: Int = buffer.height
 
     companion object {
-        @JvmStatic
         fun read(input: InputStream): Image? =
             try {
                 val buffer = ImageIO.read(input)

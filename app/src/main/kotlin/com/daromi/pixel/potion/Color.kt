@@ -19,7 +19,6 @@ class Color private constructor(
         val WHITE = Color(0xFF, 0xFF, 0xFF)
         val BLACK = Color(0x00, 0x00, 0x00)
 
-        @JvmStatic
         fun fromHex(value: Int): Color? {
             val red = (value and 0xFF0000) shr 16
             val green = (value and 0xFF00) shr 8
