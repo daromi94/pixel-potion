@@ -8,9 +8,6 @@ import javax.imageio.ImageIO
 class Image private constructor(
     private val buffer: BufferedImage,
 ) {
-    private val width: Int = buffer.width
-    private val height: Int = buffer.height
-
     companion object {
         fun read(input: InputStream): Image? =
             try {
@@ -20,6 +17,10 @@ class Image private constructor(
                 null
             }
     }
+
+    private val width: Int get() = this.buffer.width
+
+    private val height: Int get() = this.buffer.height
 
     fun write(output: OutputStream) {
         // TODO: return type, format name, and exception handling (i.e., boolean, exception, result, etc.)
