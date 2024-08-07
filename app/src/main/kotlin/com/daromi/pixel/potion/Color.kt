@@ -19,6 +19,7 @@ class Color private constructor(
             val green = (value and 0xFF00) shr 8
             val blue = value and 0xFF
 
+            // TODO: use "from" named constructor
             return Color(Channel(red), Channel(green), Channel(blue))
         }
 

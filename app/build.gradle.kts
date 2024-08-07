@@ -20,7 +20,7 @@ kotlin {
 }
 
 application {
-    mainClass = "$group.AppKt"
+    mainClass = "$group.cli.MainKt"
 }
 
 tasks.test {
