@@ -1,4 +1,4 @@
-package com.daromi.pixel.potion.shared
+package com.daromi.pixel.potion.util
 
 interface Error {
     val message: String

@@ -1,9 +1,9 @@
-package com.daromi.pixel.potion
+package com.daromi.pixel.potion.core
 
 import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.raise.ensure
-import com.daromi.pixel.potion.shared.Error
+import com.daromi.pixel.potion.util.Error
 
 class Color private constructor(
     private val red: Channel,

@@ -1,4 +1,4 @@
-package com.daromi.pixel.potion
+package com.daromi.pixel.potion.core
 
 import java.awt.image.BufferedImage
 import java.io.InputStream
