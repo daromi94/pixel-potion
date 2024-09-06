@@ -41,8 +41,8 @@ data class Channel(
                 Channel(value)
             }
 
-        class IllegalChannelError(
-            private val value: Int,
+        data class IllegalChannelError(
+            val value: Int,
         ) : Error {
             override val message: String get() = "illegal channel '${this.value}', must be in range [${MIN.value}, ${MAX.value}]"
         }

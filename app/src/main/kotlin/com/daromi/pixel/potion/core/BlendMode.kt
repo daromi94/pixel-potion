@@ -12,10 +12,13 @@ sealed interface BlendMode {
     companion object {
         fun parse(raw: String): BlendMode =
             // TODO: exception handling (i.e., nullable, result, etc.)
-            when (raw) {
-                "transparency" -> Transparency(0.5) // TODO: extract alpha
-                "multiply" -> Multiply
-                "screen" -> Screen
+            when {
+                raw.startsWith("transparency(") && raw.endsWith(")") -> Transparency(0.5) // TODO: extract alpha
+
+                raw == "multiply" -> Multiply
+
+                raw == "screen" -> Screen
+
                 else -> None
             }
     }
@@ -36,18 +39,19 @@ class Transparency(
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color =
-        Color(
-            combine(foreground.red, background.red),
-            combine(foreground.green, background.green),
-            combine(foreground.blue, background.blue),
-        )
+    ): Color {
+        val red = combine(foreground.red, background.red)
+        val green = combine(foreground.green, background.green)
+        val blue = combine(foreground.blue, background.blue)
+
+        return Color(red, green, blue)
+    }
 
     private fun combine(
-        foreground: Channel,
-        background: Channel,
+        first: Channel,
+        second: Channel,
     ): Channel {
-        val value = foreground.value * this.alpha + background.value * (1 - this.alpha)
+        val value = first.value * this.alpha + second.value * (1 - this.alpha)
         return Channel(value.toInt())
     }
 }
@@ -56,19 +60,20 @@ data object Multiply : BlendMode {
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color =
-        Color(
-            combine(foreground.red, background.red),
-            combine(foreground.green, background.green),
-            combine(foreground.blue, background.blue),
-        )
+    ): Color {
+        val red = combine(foreground.red, background.red)
+        val green = combine(foreground.green, background.green)
+        val blue = combine(foreground.blue, background.blue)
+
+        return Color(red, green, blue)
+    }
 
     private fun combine(
-        foreground: Channel,
-        background: Channel,
+        first: Channel,
+        second: Channel,
     ): Channel {
         val top = Channel.MAX
-        val value = foreground.value * background.value / top.value
+        val value = first.value * second.value / top.value
         return Channel(value)
     }
 }
@@ -77,19 +82,20 @@ data object Screen : BlendMode {
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color =
-        Color(
-            combine(foreground.red, background.red),
-            combine(foreground.green, background.green),
-            combine(foreground.blue, background.blue),
-        )
+    ): Color {
+        val red = combine(foreground.red, background.red)
+        val green = combine(foreground.green, background.green)
+        val blue = combine(foreground.blue, background.blue)
+
+        return Color(red, green, blue)
+    }
 
     private fun combine(
-        foreground: Channel,
-        background: Channel,
+        first: Channel,
+        second: Channel,
     ): Channel {
         val top = Channel.MAX
-        val value = top.value - (top.value - foreground.value) * (top.value - background.value) / top.value
+        val value = top.value - (top.value - first.value) * (top.value - second.value) / top.value
         return Channel(value)
     }
 }
