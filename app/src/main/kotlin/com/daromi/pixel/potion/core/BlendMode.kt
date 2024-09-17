@@ -33,9 +33,9 @@ data class Transparency(
         foreground: Color,
         background: Color,
     ): Color? {
-        val red   = combine(foreground.red,   background.red)   ?: return null
+        val red = combine(foreground.red, background.red) ?: return null
         val green = combine(foreground.green, background.green) ?: return null
-        val blue  = combine(foreground.blue,  background.blue)  ?: return null
+        val blue = combine(foreground.blue, background.blue) ?: return null
 
         return Color(red, green, blue)
     }
@@ -55,9 +55,9 @@ data object Multiply : BlendMode {
         foreground: Color,
         background: Color,
     ): Color? {
-        val red   = combine(foreground.red,   background.red)   ?: return null
+        val red = combine(foreground.red, background.red) ?: return null
         val green = combine(foreground.green, background.green) ?: return null
-        val blue  = combine(foreground.blue,  background.blue)  ?: return null
+        val blue = combine(foreground.blue, background.blue) ?: return null
 
         return Color(red, green, blue)
     }
@@ -66,7 +66,7 @@ data object Multiply : BlendMode {
         first: Channel,
         second: Channel,
     ): Channel? {
-        val top   = Channel.MAX
+        val top = Channel.MAX
         val value = 1.0 * first.value * second.value / top.value
 
         return Channel.from(value.toInt())
@@ -78,9 +78,9 @@ data object Screen : BlendMode {
         foreground: Color,
         background: Color,
     ): Color? {
-        val red   = combine(foreground.red,   background.red)   ?: return null
+        val red = combine(foreground.red, background.red) ?: return null
         val green = combine(foreground.green, background.green) ?: return null
-        val blue  = combine(foreground.blue,  background.blue)  ?: return null
+        val blue = combine(foreground.blue, background.blue) ?: return null
 
         return Color(red, green, blue)
     }
@@ -89,7 +89,7 @@ data object Screen : BlendMode {
         first: Channel,
         second: Channel,
     ): Channel? {
-        val top   = Channel.MAX
+        val top = Channel.MAX
         val value = top.value - 1.0 * (top.value - first.value) * (top.value - second.value) / top.value
 
         return Channel.from(value.toInt())
@@ -97,5 +97,8 @@ data object Screen : BlendMode {
 }
 
 data object None : BlendMode {
-    override fun blend(foreground: Color, background: Color): Color = foreground
+    override fun blend(
+        foreground: Color,
+        background: Color,
+    ): Color = foreground
 }

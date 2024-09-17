@@ -10,9 +10,9 @@ data class Color(
         val BLACK = Color(Channel.MIN, Channel.MIN, Channel.MIN)
 
         fun from(value: Int): Color? {
-            val red   = Channel.from((value and 0xFF0000) shr 16) ?: return null
-            val green = Channel.from((value and 0xFF00) shr 8)    ?: return null
-            val blue  = Channel.from(value and 0xFF)              ?: return null
+            val red = Channel.from((value and 0xFF0000) shr 16) ?: return null
+            val green = Channel.from((value and 0xFF00) shr 8) ?: return null
+            val blue = Channel.from(value and 0xFF) ?: return null
 
             return Color(red, green, blue)
         }
