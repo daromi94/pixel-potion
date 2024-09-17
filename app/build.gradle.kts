@@ -11,7 +11,6 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.arrow.core)
     testImplementation(libs.kotlin.test)
 }
 
