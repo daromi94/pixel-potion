@@ -9,21 +9,18 @@ class Image private constructor(
     private val buffer: BufferedImage,
 ) {
     companion object {
-        fun read(input: InputStream): Image? =
-            try {
-                val buffer = ImageIO.read(input)
-                Image(buffer)
-            } catch (_: Exception) {
-                null
-            }
+        fun read(input: InputStream): Image {
+            val buffer = ImageIO.read(input)
+
+            return Image(buffer)
+        }
     }
 
-    private val width: Int get() = this.buffer.width
+    val width: Int get() = this.buffer.width
 
-    private val height: Int get() = this.buffer.height
+    val height: Int get() = this.buffer.height
 
     fun write(output: OutputStream) {
-        // TODO: return type, format name, and exception handling (i.e., boolean, exception, result, etc.)
         ImageIO.write(this.buffer, "JPG", output)
     }
 
@@ -47,6 +44,7 @@ class Image private constructor(
 
         val buffer = BufferedImage(width, height, this.buffer.type)
         buffer.setRGB(0, 0, width, height, pixels, 0, width)
+
         return Image(buffer)
     }
 }

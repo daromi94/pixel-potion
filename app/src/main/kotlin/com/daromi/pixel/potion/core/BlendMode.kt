@@ -1,17 +1,13 @@
 package com.daromi.pixel.potion.core
 
-import kotlin.math.max
-import kotlin.math.min
-
 sealed interface BlendMode {
     fun blend(
         foreground: Color,
         background: Color,
-    ): Color
+    ): Color?
 
     companion object {
-        fun parse(raw: String): BlendMode =
-            // TODO: exception handling (i.e., nullable, result, etc.)
+        fun parse(raw: String): BlendMode? =
             when {
                 raw.startsWith("transparency(") && raw.endsWith(")") -> Transparency(0.5) // TODO: extract alpha
 
@@ -19,30 +15,27 @@ sealed interface BlendMode {
 
                 raw == "screen" -> Screen
 
-                else -> None
+                raw == "none" -> None
+
+                else -> null
             }
     }
 }
 
-/*
-  REVIEW:
-  - should this class be a data class?
-  - should this class use a factory method and make the constructor private?
-  - does this class have identity?
-  - should this class be able to instantiate with a set alpha and later change?
- */
-class Transparency(
-    alpha: Double,
+data class Transparency(
+    val alpha: Double,
 ) : BlendMode {
-    private val alpha: Double = min(max(alpha, 0.0), 1.0)
+    companion object {
+        fun from(alpha: Double): Transparency? = if (alpha !in 0.0..1.0) null else Transparency(alpha)
+    }
 
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color {
-        val red = combine(foreground.red, background.red)
-        val green = combine(foreground.green, background.green)
-        val blue = combine(foreground.blue, background.blue)
+    ): Color? {
+        val red   = combine(foreground.red,   background.red)   ?: return null
+        val green = combine(foreground.green, background.green) ?: return null
+        val blue  = combine(foreground.blue,  background.blue)  ?: return null
 
         return Color(red, green, blue)
     }
@@ -50,9 +43,10 @@ class Transparency(
     private fun combine(
         first: Channel,
         second: Channel,
-    ): Channel {
+    ): Channel? {
         val value = first.value * this.alpha + second.value * (1 - this.alpha)
-        return Channel(value.toInt())
+
+        return Channel.from(value.toInt())
     }
 }
 
@@ -60,10 +54,10 @@ data object Multiply : BlendMode {
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color {
-        val red = combine(foreground.red, background.red)
-        val green = combine(foreground.green, background.green)
-        val blue = combine(foreground.blue, background.blue)
+    ): Color? {
+        val red   = combine(foreground.red,   background.red)   ?: return null
+        val green = combine(foreground.green, background.green) ?: return null
+        val blue  = combine(foreground.blue,  background.blue)  ?: return null
 
         return Color(red, green, blue)
     }
@@ -71,10 +65,11 @@ data object Multiply : BlendMode {
     private fun combine(
         first: Channel,
         second: Channel,
-    ): Channel {
-        val top = Channel.MAX
-        val value = first.value * second.value / top.value
-        return Channel(value)
+    ): Channel? {
+        val top   = Channel.MAX
+        val value = 1.0 * first.value * second.value / top.value
+
+        return Channel.from(value.toInt())
     }
 }
 
@@ -82,10 +77,10 @@ data object Screen : BlendMode {
     override fun blend(
         foreground: Color,
         background: Color,
-    ): Color {
-        val red = combine(foreground.red, background.red)
-        val green = combine(foreground.green, background.green)
-        val blue = combine(foreground.blue, background.blue)
+    ): Color? {
+        val red   = combine(foreground.red,   background.red)   ?: return null
+        val green = combine(foreground.green, background.green) ?: return null
+        val blue  = combine(foreground.blue,  background.blue)  ?: return null
 
         return Color(red, green, blue)
     }
@@ -93,16 +88,14 @@ data object Screen : BlendMode {
     private fun combine(
         first: Channel,
         second: Channel,
-    ): Channel {
-        val top = Channel.MAX
-        val value = top.value - (top.value - first.value) * (top.value - second.value) / top.value
-        return Channel(value)
+    ): Channel? {
+        val top   = Channel.MAX
+        val value = top.value - 1.0 * (top.value - first.value) * (top.value - second.value) / top.value
+
+        return Channel.from(value.toInt())
     }
 }
 
 data object None : BlendMode {
-    override fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color = foreground
+    override fun blend(foreground: Color, background: Color): Color = foreground
 }
