@@ -5,21 +5,6 @@ sealed interface BlendMode {
         foreground: Color,
         background: Color,
     ): Color?
-
-    companion object {
-        fun parse(raw: String): BlendMode? =
-            when {
-                raw.startsWith("transparency(") && raw.endsWith(")") -> Transparency(0.5) // TODO: extract alpha
-
-                raw == "multiply" -> Multiply
-
-                raw == "screen" -> Screen
-
-                raw == "none" -> None
-
-                else -> null
-            }
-    }
 }
 
 data class Transparency(

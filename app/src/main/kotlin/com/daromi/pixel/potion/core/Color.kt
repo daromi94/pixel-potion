@@ -11,8 +11,8 @@ data class Color(
 
         fun from(value: Int): Color? {
             val red = Channel.from((value and 0xFF0000) shr 16) ?: return null
-            val green = Channel.from((value and 0xFF00) shr 8) ?: return null
-            val blue = Channel.from(value and 0xFF) ?: return null
+            val green = Channel.from((value and 0x00FF00) shr 8) ?: return null
+            val blue = Channel.from(value and 0x0000FF) ?: return null
 
             return Color(red, green, blue)
         }
