@@ -1,89 +1,79 @@
 package com.daromi.pixel.potion.core
 
 sealed interface BlendMode {
-    fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color?
+  fun blend(c1: Color, c2: Color): Color
 }
 
-data class Transparency(
-    val alpha: Double,
-) : BlendMode {
-    companion object {
-        fun from(alpha: Double): Transparency? = if (alpha !in 0.0..1.0) null else Transparency(alpha)
-    }
+class Transparency private constructor(private val alpha: Float) : BlendMode {
 
-    override fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color? {
-        val red = combine(foreground.red, background.red) ?: return null
-        val green = combine(foreground.green, background.green) ?: return null
-        val blue = combine(foreground.blue, background.blue) ?: return null
+  companion object {
+    fun from(alpha: Float): Transparency? = if (alpha !in 0.0..1.0) null else Transparency(alpha)
+  }
 
-        return Color(red, green, blue)
-    }
+  override fun blend(
+      c1: Color,
+      c2: Color,
+  ): Color {
+    val red = combine(c1.red, c2.red)
+    val green = combine(c1.green, c2.green)
+    val blue = combine(c1.blue, c2.blue)
 
-    private fun combine(
-        first: Channel,
-        second: Channel,
-    ): Channel? {
-        val value = first.value * this.alpha + second.value * (1 - this.alpha)
+    return Color(red, green, blue)
+  }
 
-        return Channel.from(value.toInt())
-    }
+  private fun combine(ch1: Channel, ch2: Channel): Channel {
+    val value = ch1.value.toFloat() * this.alpha + ch2.value.toFloat() * (1 - this.alpha)
+
+    return Channel.compact(value.toUInt())
+  }
 }
 
 data object Multiply : BlendMode {
-    override fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color? {
-        val red = combine(foreground.red, background.red) ?: return null
-        val green = combine(foreground.green, background.green) ?: return null
-        val blue = combine(foreground.blue, background.blue) ?: return null
 
-        return Color(red, green, blue)
-    }
+  override fun blend(
+      c1: Color,
+      c2: Color,
+  ): Color {
+    val red = combine(c1.red, c2.red)
+    val green = combine(c1.green, c2.green)
+    val blue = combine(c1.blue, c2.blue)
 
-    private fun combine(
-        first: Channel,
-        second: Channel,
-    ): Channel? {
-        val top = Channel.MAX
-        val value = 1.0 * first.value * second.value / top.value
+    return Color(red, green, blue)
+  }
 
-        return Channel.from(value.toInt())
-    }
+  private fun combine(
+      ch1: Channel,
+      ch2: Channel,
+  ): Channel {
+    val value = 1.0 * ch1.value.toFloat() * ch2.value.toFloat() / 0xFF
+
+    return Channel.compact(value.toUInt())
+  }
 }
 
 data object Screen : BlendMode {
-    override fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color? {
-        val red = combine(foreground.red, background.red) ?: return null
-        val green = combine(foreground.green, background.green) ?: return null
-        val blue = combine(foreground.blue, background.blue) ?: return null
 
-        return Color(red, green, blue)
-    }
+  override fun blend(
+      c1: Color,
+      c2: Color,
+  ): Color {
+    val red = combine(c1.red, c2.red)
+    val green = combine(c1.green, c2.green)
+    val blue = combine(c1.blue, c2.blue)
 
-    private fun combine(
-        first: Channel,
-        second: Channel,
-    ): Channel? {
-        val top = Channel.MAX
-        val value = top.value - 1.0 * (top.value - first.value) * (top.value - second.value) / top.value
+    return Color(red, green, blue)
+  }
 
-        return Channel.from(value.toInt())
-    }
+  private fun combine(
+      ch1: Channel,
+      ch2: Channel,
+  ): Channel {
+    val value = 0xFF - 1.0 * (0xFF - ch1.value.toFloat()) * (0xFF - ch2.value.toFloat()) / 0xFF
+
+    return Channel.compact(value.toUInt())
+  }
 }
 
 data object None : BlendMode {
-    override fun blend(
-        foreground: Color,
-        background: Color,
-    ): Color = foreground
+  override fun blend(c1: Color, c2: Color): Color = c1
 }

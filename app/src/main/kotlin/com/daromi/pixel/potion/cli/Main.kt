@@ -1,5 +1,5 @@
 package com.daromi.pixel.potion.cli
 
 fun main() {
-    println("Hello, World!")
+  println("Hello, World!")
 }
