@@ -14,9 +14,9 @@ class Transparency private constructor(private val alpha: Float) : BlendMode {
       c1: Color,
       c2: Color,
   ): Color {
-    val red = combine(c1.red, c2.red)
+    val red   = combine(c1.red,   c2.red)
     val green = combine(c1.green, c2.green)
-    val blue = combine(c1.blue, c2.blue)
+    val blue  = combine(c1.blue,  c2.blue)
 
     return Color(red, green, blue)
   }
@@ -37,9 +37,9 @@ data object Multiply : BlendMode {
       c1: Color,
       c2: Color,
   ): Color {
-    val red = combine(c1.red, c2.red)
+    val red   = combine(c1.red,   c2.red)
     val green = combine(c1.green, c2.green)
-    val blue = combine(c1.blue, c2.blue)
+    val blue  = combine(c1.blue,  c2.blue)
 
     return Color(red, green, blue)
   }
@@ -60,9 +60,9 @@ data object Screen : BlendMode {
       c1: Color,
       c2: Color,
   ): Color {
-    val red = combine(c1.red, c2.red)
+    val red   = combine(c1.red,   c2.red)
     val green = combine(c1.green, c2.green)
-    val blue = combine(c1.blue, c2.blue)
+    val blue  = combine(c1.blue,  c2.blue)
 
     return Color(red, green, blue)
   }
