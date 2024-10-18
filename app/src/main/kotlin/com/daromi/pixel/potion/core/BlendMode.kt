@@ -7,7 +7,7 @@ sealed interface BlendMode {
 class Transparency private constructor(private val alpha: Float) : BlendMode {
 
   companion object {
-    fun from(alpha: Float): Transparency? = if (alpha !in 0.0..1.0) null else Transparency(alpha)
+    fun from(alpha: Float): Transparency? = if (alpha !in 0.0f..1.0f) null else Transparency(alpha)
   }
 
   override fun blend(
@@ -21,8 +21,11 @@ class Transparency private constructor(private val alpha: Float) : BlendMode {
     return Color(red, green, blue)
   }
 
-  private fun combine(ch1: Channel, ch2: Channel): Channel {
-    val value = ch1.value.toFloat() * this.alpha + ch2.value.toFloat() * (1 - this.alpha)
+  private fun combine(
+      ch1: Channel,
+      ch2: Channel,
+  ): Channel {
+    val value = ch1.value.toFloat() * this.alpha + ch2.value.toFloat() * (1.0f - this.alpha)
 
     return Channel.compact(value.toUInt())
   }
@@ -45,7 +48,7 @@ data object Multiply : BlendMode {
       ch1: Channel,
       ch2: Channel,
   ): Channel {
-    val value = 1.0 * ch1.value.toFloat() * ch2.value.toFloat() / 0xFF
+    val value = 1.0f * ch1.value.toFloat() * ch2.value.toFloat() / 0xFF
 
     return Channel.compact(value.toUInt())
   }
@@ -68,7 +71,7 @@ data object Screen : BlendMode {
       ch1: Channel,
       ch2: Channel,
   ): Channel {
-    val value = 0xFF - 1.0 * (0xFF - ch1.value.toFloat()) * (0xFF - ch2.value.toFloat()) / 0xFF
+    val value = 0xFF - 1.0f * (0xFF - ch1.value.toFloat()) * (0xFF - ch2.value.toFloat()) / 0xFF
 
     return Channel.compact(value.toUInt())
   }
