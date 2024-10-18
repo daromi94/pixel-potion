@@ -16,7 +16,7 @@ data class Color(val red: Channel, val green: Channel, val blue: Channel) {
   }
 
   fun toUInt(): UInt {
-    val high = this.red.expand() shl 16
+    val high = this.red.expand()   shl 16
     val mid  = this.green.expand() shl 8
     val low  = this.blue.expand()
 
