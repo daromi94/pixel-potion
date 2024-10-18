@@ -28,10 +28,12 @@ class Image private constructor(private val buffer: BufferedImage) {
       width: UInt,
       height: UInt,
   ): Image? {
+    // Check bounds
     if (x + width > this.width || y + height > this.height) {
       return null
     }
 
+    // Extract pixels
     val area   = !(width * height)
     val pixels = IntArray(area)
 
@@ -42,6 +44,7 @@ class Image private constructor(private val buffer: BufferedImage) {
       }
     }
 
+    // Create image
     val buffer = BufferedImage(!width, !height, this.buffer.type)
     buffer.setRGB(0, 0, !width, !height, pixels, 0, !width)
 
