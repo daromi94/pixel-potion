@@ -34,8 +34,8 @@ class Image private constructor(private val buffer: BufferedImage) {
     }
 
     // Extract pixels
-    val area   = !(width * height)
-    val pixels = IntArray(area)
+    val area   = width * height
+    val pixels = IntArray(!area)
 
     for (j in y..<y + height) {
       for (i in x..<x + width) {
