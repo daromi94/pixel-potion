@@ -36,5 +36,9 @@ value class Channel(val value: UByte) {
 
   fun expand(): UInt = this.value.toUInt()
 
-  override fun toString(): String = TODO("Not yet implemented!")
+  override fun toString(): String {
+    val hex = Integer.toHexString(this.value.toInt())
+
+    return "Channel($hex)"
+  }
 }
