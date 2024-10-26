@@ -16,10 +16,10 @@ class Image private constructor(private val buffer: BufferedImage) {
     }
   }
 
-  val width: UInt
+  private val width: UInt
     get() = this.buffer.width.toUInt()
 
-  val height: UInt
+  private val height: UInt
     get() = this.buffer.height.toUInt()
 
   fun crop(
