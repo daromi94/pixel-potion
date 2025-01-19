@@ -1,8 +1,10 @@
-# Linux/macOS wrapper should use lf
-/gradlew        text eol=lf
+# Gradle
 
-# Windows scripts should use crlf
-*.bat           text eol=crlf
+## Linux/macOS wrapper should use lf
+/gradlew text eol=lf
 
-# Binary files should be left untouched
-*.jar           binary
+## Windows scripts should use crlf
+*.bat text eol=crlf
+
+## Binary files should be left untouched
+*.jar binary
